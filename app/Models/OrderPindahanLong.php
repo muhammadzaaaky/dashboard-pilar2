@@ -21,6 +21,8 @@ class OrderPindahanLong extends Model
         'tkbm',
         'harga',
         'whatsapp',
+        'user_id',
+        'status',
         'nama',
         'email',
         'paket',

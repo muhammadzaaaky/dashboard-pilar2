@@ -1,5 +1,5 @@
 <x-app-layout>
-    @section('title', 'LongTripSewaTruk | Pilar')
+    @section('title', 'LongTripPindahan | Pilar')
     <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
 
         <!-- Welcome banner -->
@@ -40,14 +40,16 @@
         <div class="sm:flex sm:justify-between sm:items-center mb-8">
             <!-- Right: Actions -->
             <div class="grid grid-flow-col sm:auto-cols-max justify-end lg:justify-end sm:justify-end gap-2">
-                <a href="/create-harga" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+
+                <!-- Add view button -->
+                <a href="/create-harga-pindahanlongtrip" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
                     <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
                         <path
                             d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
                     </svg>
                     <span class="hidden xs:block ml-2">Tambah Harga</span>
                 </a>
-                <a href="/download-longsewa" class="btn bg-green-500 hover:bg-green-600 text-white">
+                <a href="/download-pindahanshorttrip" class="btn bg-green-500 hover:bg-green-600 text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                         style="fill: rgba(255, 250, 250, 1);transform: ;msFilter:;">
                         <path
@@ -55,6 +57,7 @@
                         </path>
                         <path d="M13.004 14v-4h-2v4h-3l4 5 4-5z"></path>
                     </svg>
+                    {{-- <span class="hidden xs:block ml-2">Daftar Vendor</span> --}}
                     <button type="submit" class="hidden xs:block ml-2">Download CSV</button>
                 </a>
                 <dif class="btn bg-orange-500 hover:bg-orange-600 text-white"">
@@ -65,6 +68,7 @@
                             d="M7 19h2v-2H7c-1.654 0-3-1.346-3-3 0-1.404 1.199-2.756 2.673-3.015l.581-.102.192-.558C8.149 8.274 9.895 7 12 7c2.757 0 5 2.243 5 5v1h1c1.103 0 2 .897 2 2s-.897 2-2 2h-3v2h3c2.206 0 4-1.794 4-4a4.01 4.01 0 0 0-3.056-3.888C18.507 7.67 15.56 5 12 5 9.244 5 6.85 6.611 5.757 9.15 3.609 9.792 2 11.82 2 14c0 2.757 2.243 5 5 5z">
                         </path>
                     </svg>
+                    {{-- <span class="hidden xs:block ml-2">Daftar Vendor</span> --}}
                     <button onclick="showModal()" class="text-white font-bold rounded">Upload CSV</button>
                 </dif>
             </div>
@@ -75,9 +79,10 @@
             <div class="modal-container bg-white w-1/2 mx-auto rounded shadow-lg z-50 overflow-y-auto">
                 <div class="modal-content py-4 text-left px-6 justify-end">
                     <div class="flex justify-between items-center pb-3">
-                        <p class="text-2xl font-bold">Unggah File</p>+
+                        <p class="text-2xl font-bold">Unggah File</p>
                     </div>
-                    <form id="uploadForm" action="/import-longtripsewa" method="POST" enctype="multipart/form-data">
+                    <form id="uploadForm" action="/import-pindahanshorttrip" method="POST"
+                        enctype="multipart/form-data">
                         @csrf
                         <input type="file" name="file" class="py-2 px-4">
                         <button type="submit"
@@ -94,31 +99,16 @@
             <div
                 class="col-span-full xl:col-span-15 bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700">
                 <header class="px-5 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center">
-                    <h2 class="font-semibold text-slate-800 dark:text-slate-100">List Longtrip Sewa Truk-</h2>
+                    <h2 class="font-semibold text-slate-800 dark:text-slate-100">Hasil Pencarian</h2>
                     <div class="mx-2">
-                        <form action="{{ url('/search/result') }}" method="GET">
-                            <label for="origin_kabupaten">Origin Kabupaten:</label>
-                            <select name="origin_kabupaten" id="origin_kabupaten">
-                                @foreach ($originKabupatens as $originKabupaten)
-                                    <option value="{{ $originKabupaten }}">
-                                        {{ $originKabupaten }}</option>
-                                @endforeach
-                            </select>
-
-                            <label for="destinasi_kabupaten">Destinasi Kabupaten:</label>
-                            <select name="destinasi_kabupaten" id="destinasi_kabupaten">
-                                @foreach ($destinasiKabupatens as $destinasiKabupaten)
-                                    <option value="{{ $destinasiKabupaten }}">
-                                        {{ $destinasiKabupaten }}</option>
-                                @endforeach
-                            </select>
-
-                            <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-                                type="submit">Search</button>
-                        </form>
-                    </div>
+                        @if ($results->count() > 0)
+                            <h1 style="font-weight: 700;">
+                                {{ $results[0]->origin_kabupaten }} ke {{ $results[0]->destinasi_kabupaten }}
+                            </h1>
+                        @endif
                 </header>
                 <div class="p-3">
+
                     <!-- Table -->
                     <div class="overflow-x-auto">
                         <table class="table-auto w-full dark:text-slate-300">
@@ -133,13 +123,13 @@
                                         <div class="font-semibold text-left">Origin Provinsi</div>
                                     </th>
                                     <th class="p-2">
-                                        <div class="font-semibold text-center">Origin Kab/Kota</div>
+                                        <div class="font-semibold text-center">Origin Kabupaten</div>
                                     </th>
                                     <th class="p-2 m-2">
                                         <div class="font-semibold text-left">Destinasi Provinsi</div>
                                     </th>
                                     <th class="p-2">
-                                        <div class="font-semibold text-center">Destinasi Kab/Kota</div>
+                                        <div class="font-semibold text-center">Destinasi Kabupaten</div>
                                     </th>
                                     <th class="p-2">
                                         <div class="font-semibold text-center">Armada</div>
@@ -153,7 +143,7 @@
                                 </tr>
                             </thead>
                             <tbody class="text-sm font-medium divide-y divide-slate-100 dark:divide-slate-700">
-                                @foreach ($hargas as $harga)
+                                @foreach ($results as $harga)
                                     <tr>
                                         <td class="p-2">
                                             {{ $loop->iteration }}.
@@ -179,7 +169,7 @@
                                             </p>
                                         </td>
                                         <td class="p-2">
-                                            <p class="text-center">
+                                            <p class="text-left">
                                                 {{ $harga->armada }}
                                             </p>
                                         </td>
@@ -188,15 +178,15 @@
                                                 Rp. {{ number_format($harga->harga, 0, ',', '.') }}
                                             </p>
                                         </td>
-                                        <td class="p-4">
+                                        <td class="p-2">
                                             <div class="text-center">
                                                 <button
                                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                                    <a href="/edit-longsewatruk/{{ $harga->id }}">Edit</a>
+                                                    <a href="/edit-pindahanlongtrip/{{ $harga->id }}">Edit</a>
                                                 </button>
                                                 <button
                                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                                    <a href="/delete-longsewatruk/{{ $harga->id }}">Delete</a>
+                                                    <a href="/delete-pindahanlongtrip/{{ $harga->id }}">Delete</a>
                                                 </button>
                                             </div>
                                         </td>
@@ -204,7 +194,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $hargas->links() }}
+                        {{ $results->links() }}
                     </div>
                 </div>
             </div>

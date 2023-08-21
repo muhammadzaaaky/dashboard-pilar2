@@ -8,6 +8,7 @@ use App\Models\Province;
 use App\Models\Regency;
 use App\Models\District;
 use App\Models\Village;
+use Illuminate\Support\Facades\DB;
 
 class ShortTripPindahanController extends Controller
 {
@@ -20,14 +21,15 @@ class ShortTripPindahanController extends Controller
     public function index()
     {
         // $dataFeed = new DataFeed();
-
+        $originKabupatens = DB::table('short_trip_pindahan')->distinct('origin_kabupaten')->pluck('origin_kabupaten');
+        $destinasiKabupatens = DB::table('short_trip_pindahan')->distinct('destinasi_kabupaten')->pluck('destinasi_kabupaten');
         // return view('pages/dashboard/dashboard', compact('dataFeed'));
         $hargas = ShortTripPindahan::latest()->when(request()->search, function ($hargas) {
             $hargas = $hargas->where('origin_kabupaten', 'like', '%' . request()->search . '%');
             $hargas = $hargas->orWhere('alamat', 'like', '%' . request()->search . '%');
             $hargas = $hargas->orWhere('nama_driver', 'like', '%' . request()->search . '%');
         })->paginate(100);
-        return view('pages/shorttrippindahan/index', compact('hargas'));
+        return view('pages/shorttrippindahan/index', compact('hargas', 'originKabupatens', 'destinasiKabupatens'));
     }
 
     public function kabupaten(Request $request)
@@ -143,5 +145,39 @@ class ShortTripPindahanController extends Controller
         $hargas = ShortTripPindahan::findOrFail($id);
         $hargas->delete();
         return redirect()->route('listharga-pindahanshorttrip')->with('delete', 'Data deleted successfully');
+    }
+    public function search(Request $request)
+    {
+        $originKabupatens = DB::table('longtrip_truk')->select('origin_kabupaten')->distinct()->get();
+        $destinasiKabupatens = DB::table('longtrip_truk')->select('destinasi_kabupaten')->distinct()->get();
+        $hargas = DB::table('longtrip_truk')->select('harga')->distinct()->get();
+
+        $query = ShortTripPindahan::query();
+
+        if ($request->origin_kabupaten) {
+            $query->where('origin_kabupaten', 'LIKE', '%' . $request->origin_kabupaten . '%');
+        }
+
+        if ($request->destinasi_kabupaten) {
+            $query->where('destinasi_kabupaten', 'LIKE', '%' . $request->destinasi_kabupaten . '%');
+        }
+
+        // Lakukan paginasi pada hasil query
+        $results = $query->paginate(100); // Ganti get() menjadi paginate()
+
+        return view('pages.shorttrippindahan.search', compact('originKabupatens', 'destinasiKabupatens', 'hargas', 'results'));
+    }
+
+    public function liveSearch(Request $request)
+    {
+        $query = $request->input('query');
+
+        // Lakukan query pencarian berdasarkan teks yang diberikan
+        $results = ShortTripPindahan::where('origin_kabupaten', 'LIKE', '%' . $query . '%')
+            ->pluck('origin_kabupaten')
+            ->toArray();
+
+        // Mengembalikan hasil dalam bentuk JSON
+        return response()->json($results);
     }
 }

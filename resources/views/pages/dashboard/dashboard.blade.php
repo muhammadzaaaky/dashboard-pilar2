@@ -136,9 +136,9 @@
                                     <th class="p-2">
                                         <div class="font-semibold text-center">Detail</div>
                                     </th>
-                                    <th class="p-2">
+                                    {{-- <th class="p-2">
                                         <div class="font-semibold text-center">Actions</div>
-                                    </th>
+                                    </th> --}}
                                 </tr>
                             </thead>
                             <!-- Table body -->
@@ -257,7 +257,7 @@
                                                     </div>
                                                 </div>
                                             </td>
-                                            <td class="p-4">
+                                            {{-- <td class="p-4">
                                                 <div class="text-center">
                                                     <button
                                                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
@@ -268,7 +268,7 @@
                                                         <a href="/delete/{{ $vendor->id }}">Delete</a>
                                                     </button>
                                                 </div>
-                                            </td>
+                                            </td> --}}
                                         </tr>
                                     @endforeach
                                 @endif

@@ -38,17 +38,8 @@
         @endif
         <!-- Dashboard actions -->
         <div class="sm:flex sm:justify-between sm:items-center mb-8">
-
-
             <!-- Right: Actions -->
             <div class="grid grid-flow-col sm:auto-cols-max justify-end lg:justify-end sm:justify-end gap-2">
-
-                <!-- Filter button -->
-
-                <!-- Datepicker built with flatpickr -->
-                {{-- <x-datepicker /> --}}
-                {{-- <x-dropdown-filter align="right" /> --}}
-
                 <!-- Add view button -->
                 <a href="/create-harga-shorttruk" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
                     <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
@@ -105,8 +96,30 @@
         <div class="grid grid-cols-12 gap-6">
             <div
                 class="col-span-full xl:col-span-15 bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700">
-                <header class="px-5 py-4 border-b border-slate-100 dark:border-slate-700">
+                <header class="px-5 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center">
                     <h2 class="font-semibold text-slate-800 dark:text-slate-100">List Shorttrip Sewa Truk</h2>
+                    <div class="mx-2">
+                        <form action="{{ url('/search/result/sewatruk-short') }}" method="GET">
+                            <label for="origin_kabupaten">Origin Kabupaten:</label>
+                            <select name="origin_kabupaten" id="origin_kabupaten">
+                                @foreach ($originKabupatens as $originKabupaten)
+                                    <option value="{{ $originKabupaten }}">
+                                        {{ $originKabupaten }}</option>
+                                @endforeach
+                            </select>
+
+                            <label for="destinasi_kabupaten">Destinasi Kabupaten:</label>
+                            <select name="destinasi_kabupaten" id="destinasi_kabupaten">
+                                @foreach ($destinasiKabupatens as $destinasiKabupaten)
+                                    <option value="{{ $destinasiKabupaten }}">
+                                        {{ $destinasiKabupaten }}</option>
+                                @endforeach
+                            </select>
+
+                            <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                                type="submit">Search</button>
+                        </form>
+                    </div>
                 </header>
                 <div class="p-3">
 

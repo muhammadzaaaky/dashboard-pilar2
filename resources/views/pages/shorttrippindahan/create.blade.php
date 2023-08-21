@@ -89,17 +89,17 @@
                                 <select placeholder="Jenis Armada" name="armada"
                                     class="text-black placeholder-gray-600 w-full px-4 py-2 mt-2 text-base transition duration-500 ease-in-out transform border-transparent rounded-lg bg-gray-200 focus:border-blueGray-500 focus:bg-white dark:focus:bg-gray-800 focus:outline-none focus:shadow-outline focus:ring-2 ring-offset-current ring-offset-2 ring-gray-400">
                                     <option value="">-- pilih armada --</option>
-                                    <option value="PickUp">PICKUP</option>
-                                    {{-- <option value="L300">L300</option> --}}
-                                    <option value="CDE">CDE</option>
-                                    <option value="CDE">CDE BAK</option>
-                                    {{-- <option value="CDE Box">CDE BOX</option> --}}
-                                    {{-- <option value="CDD Box">CDD BOX</option> --}}
-                                    <option value="Long">CDD LONG BOX</option>
-                                    <option value="Fuso">FUSO</option>
-                                    {{-- <option value="Fuso Box">FUSO BOX</option> --}}
-                                    {{-- <option value="tronton bak/3away">TRONTON BAK</option> --}}
-                                    {{-- <option value="tronton wing box/build up">TRONTON WINGBOX</option> --}}
+                                    <option value="pickup">PICKUP</option>
+                                    <option value="L300">L300</option>
+                                    <option value="CDE Bak">CDE BAK</option>
+                                    <option value="CDE Box">CDE BOX</option>
+                                    <option value="CDD Bak">CDD BAK</option>
+                                    <option value="CDD Box">CDD BOX</option>
+                                    <option value="CDD Long Box">CDD LONG BOX</option>
+                                    <option value="Fuso Bak">FUSO BAK</option>
+                                    <option value="Fuso Box">FUSO BOX</option>
+                                    <option value="tronton bak/3away">TRONTON BAK</option>
+                                    <option value="tronton wing box/build up">TRONTON WINGBOX</option>
                                 </select>
                             </div>
                             <div>

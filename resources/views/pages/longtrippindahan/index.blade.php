@@ -98,10 +98,10 @@
         <div class="grid grid-cols-12 gap-6">
             <div
                 class="col-span-full xl:col-span-15 bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700">
-                <header class="px-5 py-4 border-b border-slate-100 dark:border-slate-700">
-                    <h2 class="font-semibold text-slate-800 dark:text-slate-100">List Pindahan Longtrip Harga</h2>
+                <header class="px-5 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center">
+                    <h2 class="font-semibold text-slate-800 dark:text-slate-100">List Longtrip Pindahan</h2>
                     <div class="mx-2">
-                        <form action="{{ url('/search/result') }}" method="GET">
+                        <form action="{{ url('/search/result/pindahan-long') }}" method="GET">
                             <label for="origin_kabupaten">Origin Kabupaten:</label>
                             <select name="origin_kabupaten" id="origin_kabupaten">
                                 @foreach ($originKabupatens as $originKabupaten)
@@ -136,16 +136,16 @@
                                         <div class="font-semibold text-left">No</div>
                                     </th>
                                     <th class="p-2">
-                                        <div class="font-semibold text-left">Origin Kabupaten</div>
+                                        <div class="font-semibold text-left">Origin Provinsi</div>
                                     </th>
                                     <th class="p-2">
-                                        <div class="font-semibold text-center">Origin Kecamatan</div>
+                                        <div class="font-semibold text-center">Origin Kabupaten</div>
+                                    </th>
+                                    <th class="p-2 m-2">
+                                        <div class="font-semibold text-left">Destinasi Provinsi</div>
                                     </th>
                                     <th class="p-2 m-2">
                                         <div class="font-semibold text-left">Destinasi Kabupaten</div>
-                                    </th>
-                                    <th class="p-2">
-                                        <div class="font-semibold text-center">Destinasi Kecamatan</div>
                                     </th>
                                     <th class="p-2">
                                         <div class="font-semibold text-center">Armada</div>
@@ -166,12 +166,17 @@
                                         </td>
                                         <td class="p-2">
                                             <p class="text-left">
-                                                {{ $harga->origin_kabupaten }}
+                                                {{ $harga->origin_provinsi }}
                                             </p>
                                         </td>
                                         <td class="p-2">
                                             <p class="text-center">
-                                                {{ $harga->origin_kecamatan }}
+                                                {{ $harga->origin_kabupaten }}
+                                            </p>
+                                        </td>
+                                        <td class="p-2 m-2">
+                                            <p class="text-left">
+                                                {{ $harga->destinasi_provinsi }}
                                             </p>
                                         </td>
                                         <td class="p-2 m-2">
@@ -181,11 +186,6 @@
                                         </td>
                                         <td class="p-2">
                                             <p class="text-center">
-                                                {{ $harga->destinasi_kecamatan }}
-                                            </p>
-                                        </td>
-                                        <td class="p-2">
-                                            <p class="text-left">
                                                 {{ $harga->armada }}
                                             </p>
                                         </td>

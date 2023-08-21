@@ -79,10 +79,10 @@ class LongTripTrukController extends Controller
         $validatedData = $request->validate([
             'origin_provinsi' => 'required',
             'origin_kabupaten' => 'required',
-            'origin_kecamatan' => 'required',
+            // 'origin_kecamatan' => 'required',
             'destinasi_provinsi' => 'required',
             'destinasi_kabupaten' => 'required',
-            'destinasi_kecamatan' => 'required',
+            // 'destinasi_kecamatan' => 'required',
             'armada' => 'required',
             'harga' => 'required',
         ]);
@@ -90,19 +90,19 @@ class LongTripTrukController extends Controller
         // Mendapatkan nama provinsi, kabupaten, dan kecamatan berdasarkan ID yang dipilih
         $originProvinsi = Province::find($request->origin_provinsi)->name;
         $originKabupaten = Regency::find($request->origin_kabupaten)->name;
-        $originKecamatan = District::find($request->origin_kecamatan)->name;
+        // $originKecamatan = District::find($request->origin_kecamatan)->name;
         $destinasiProvinsi = Province::find($request->destinasi_provinsi)->name;
         $destinasiKabupaten = Regency::find($request->destinasi_kabupaten)->name;
-        $destinasiKecamatan = District::find($request->destinasi_kecamatan)->name;
+        // $destinasiKecamatan = District::find($request->destinasi_kecamatan)->name;
 
         // Membuat objek Data baru
         $data = new LongTripTruk;
         $data->origin_provinsi = $originProvinsi;
         $data->origin_kabupaten = $originKabupaten;
-        $data->origin_kecamatan = $originKecamatan;
+        // $data->origin_kecamatan = $originKecamatan;
         $data->destinasi_provinsi = $destinasiProvinsi;
         $data->destinasi_kabupaten = $destinasiKabupaten;
-        $data->destinasi_kecamatan = $destinasiKecamatan;
+        // $data->destinasi_kecamatan = $destinasiKecamatan;
         $data->armada = $request->armada;
         $data->harga = $request->harga;
         $data->save();
@@ -164,14 +164,14 @@ class LongTripTrukController extends Controller
             $query->where('destinasi_kabupaten', 'LIKE', '%' . $request->destinasi_kabupaten . '%');
         }
 
-        // Menggunakan distinct pada builder sebelum paginasi
-        $query->distinct();
+        // Jangan gunakan distinct() di sini karena akan mempengaruhi paginasi
 
         // Lakukan paginasi pada hasil query
-        $result = $query->get();
+        $results = $query->paginate(100); // Ganti get() menjadi paginate()
 
-        return view('pages.longtriptruk.search', compact('originKabupatens', 'destinasiKabupatens', 'hargas', 'result'));
+        return view('pages.longtriptruk.search', compact('originKabupatens', 'destinasiKabupatens', 'hargas', 'results'));
     }
+
 
     public function liveSearch(Request $request)
     {

@@ -96,9 +96,11 @@
                 <header class="px-5 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center">
                     <h2 class="font-semibold text-slate-800 dark:text-slate-100">Hasil Pencarian</h2>
                     <div class="mx-2">
-                        <h1 style="font-weight: 700;">
-                            {{ $result[0]->origin_kabupaten }} ke {{ $result[0]->destinasi_kabupaten }}
-                        </h1>
+                        @if ($results->count() > 0)
+                            <h1 style="font-weight: 700;">
+                                {{ $results[0]->origin_kabupaten }} ke {{ $results[0]->destinasi_kabupaten }}
+                            </h1>
+                        @endif
                 </header>
                 <div class="p-3">
                     <div class="overflow-x-auto">
@@ -111,16 +113,16 @@
                                         <div class="font-semibold text-left">No</div>
                                     </th>
                                     <th class="p-2">
-                                        <div class="font-semibold text-left">Origin Kabupaten</div>
+                                        <div class="font-semibold text-left">Origin Provinsi</div>
                                     </th>
                                     <th class="p-2">
-                                        <div class="font-semibold text-center">Origin Kecamatan</div>
+                                        <div class="font-semibold text-center">Origin Kab/Kota</div>
                                     </th>
                                     <th class="p-2 m-2">
-                                        <div class="font-semibold text-left">Destinasi Kabupaten</div>
+                                        <div class="font-semibold text-left">Destinasi Provinsi</div>
                                     </th>
                                     <th class="p-2">
-                                        <div class="font-semibold text-center">Destinasi Kecamatan</div>
+                                        <div class="font-semibold text-center">Destinasi Kab/Kota</div>
                                     </th>
                                     <th class="p-2">
                                         <div class="font-semibold text-center">Armada</div>
@@ -134,29 +136,29 @@
                                 </tr>
                             </thead>
                             <tbody class="text-sm font-medium divide-y divide-slate-100 dark:divide-slate-700">
-                                @foreach ($result as $item)
+                                @foreach ($results as $item)
                                     <tr>
                                         <td class="p-2">
                                             {{ $loop->iteration }}.
                                         </td>
                                         <td class="p-2">
                                             <p class="text-left">
-                                                {{ $item->origin_kabupaten }}
+                                                {{ $item->origin_provinsi }}
                                             </p>
                                         </td>
                                         <td class="p-2">
                                             <p class="text-center">
-                                                {{ $item->origin_kecamatan }}
+                                                {{ $item->origin_kabupaten }}
                                             </p>
                                         </td>
                                         <td class="p-2 m-2">
                                             <p class="text-left">
-                                                {{ $item->destinasi_kabupaten }}
+                                                {{ $item->destinasi_provinsi }}
                                             </p>
                                         </td>
-                                        <td class="p-2">
+                                        <td class="p-2">    
                                             <p class="text-center">
-                                                {{ $item->destinasi_kecamatan }}
+                                                {{ $item->destinasi_kabupaten }}
                                             </p>
                                         </td>
                                         <td class="p-2">
@@ -185,6 +187,7 @@
                                 @endforeach
                             </tbody>
                         </table>
+                        {{ $results->links() }}
                     </div>
                 </div>
             </div>
@@ -202,58 +205,3 @@
         }
     </script>
 </x-app-layout>
-
-
-
-{{-- <!DOCTYPE html>
-<html>
-
-<head>
-    <title>Long Trip Truk Search</title>
-</head>
-
-<body>
-    <h1>Long Trip Truk Search</h1>
-
-    <form action="/search/result" method="GET">
-        <label for="origin_kabupaten">Origin Kabupaten:</label>
-        <select name="origin_kabupaten" id="origin_kabupaten">
-            @foreach ($originKabupatens as $originKabupaten)
-                <option value="{{ $originKabupaten->origin_kabupaten }}">{{ $originKabupaten->origin_kabupaten }}
-                </option>
-            @endforeach
-        </select>
-
-        <label for="destinasi_kabupaten">Destinasi Kabupaten:</label>
-        <select name="destinasi_kabupaten" id="destinasi_kabupaten">
-            @foreach ($destinasiKabupatens as $destinasiKabupaten)
-                <option value="{{ $destinasiKabupaten->destinasi_kabupaten }}">
-                    {{ $destinasiKabupaten->destinasi_kabupaten }}</option>
-            @endforeach
-        </select>
-
-        <label for="harga">Harga:</label>
-        <select name="harga" id="harga">
-            @foreach ($hargas as $harga)
-                <option value="{{ $harga->harga }}">{{ $harga->harga }}</option>
-            @endforeach
-        </select>
-
-        <button type="submit">Search</button>
-    </form>
-
-    <h2>Search Results</h2>
-    <ul>
-        @foreach ($result as $item)
-            <li>
-                Origin: {{ $item->origin_kabupaten }},
-                Destinasi: {{ $item->destinasi_kabupaten }},
-                Kecamatan: {{ $item->destinasi_kecamatan }},
-                Armada: {{ $item->armada }},
-                Harga: {{ $item->harga }}
-            </li>
-        @endforeach
-    </ul>
-</body>
-
-</html> --}}

@@ -1,5 +1,5 @@
 <x-app-layout>
-    @section('title', 'LongTripSewaTruk | Pilar')
+    @section('title', 'ShortTripSewaTruk | Pilar')
     <div class="px-4 sm:px-6 lg:px-8 py-8 w-full max-w-9xl mx-auto">
 
         <!-- Welcome banner -->
@@ -40,14 +40,14 @@
         <div class="sm:flex sm:justify-between sm:items-center mb-8">
             <!-- Right: Actions -->
             <div class="grid grid-flow-col sm:auto-cols-max justify-end lg:justify-end sm:justify-end gap-2">
-                <a href="/create-harga" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
+                <a href="/create-harga-shorttruk" class="btn bg-indigo-500 hover:bg-indigo-600 text-white">
                     <svg class="w-4 h-4 fill-current opacity-50 shrink-0" viewBox="0 0 16 16">
                         <path
                             d="M15 7H9V1c0-.6-.4-1-1-1S7 .4 7 1v6H1c-.6 0-1 .4-1 1s.4 1 1 1h6v6c0 .6.4 1 1 1s1-.4 1-1V9h6c.6 0 1-.4 1-1s-.4-1-1-1z" />
                     </svg>
                     <span class="hidden xs:block ml-2">Tambah Harga</span>
                 </a>
-                <a href="/download-longsewa" class="btn bg-green-500 hover:bg-green-600 text-white">
+                <a href="/download-shortsewa" class="btn bg-green-500 hover:bg-green-600 text-white">
                     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
                         style="fill: rgba(255, 250, 250, 1);transform: ;msFilter:;">
                         <path
@@ -77,7 +77,7 @@
                     <div class="flex justify-between items-center pb-3">
                         <p class="text-2xl font-bold">Unggah File</p>+
                     </div>
-                    <form id="uploadForm" action="/import-longtripsewa" method="POST" enctype="multipart/form-data">
+                    <form id="uploadForm" action="/import-shorttripsewa" method="POST" enctype="multipart/form-data">
                         @csrf
                         <input type="file" name="file" class="py-2 px-4">
                         <button type="submit"
@@ -94,32 +94,15 @@
             <div
                 class="col-span-full xl:col-span-15 bg-white dark:bg-slate-800 shadow-lg rounded-sm border border-slate-200 dark:border-slate-700">
                 <header class="px-5 py-4 border-b border-slate-100 dark:border-slate-700 flex items-center">
-                    <h2 class="font-semibold text-slate-800 dark:text-slate-100">List Longtrip Sewa Truk-</h2>
+                    <h2 class="font-semibold text-slate-800 dark:text-slate-100">Hasil Pencarian</h2>
                     <div class="mx-2">
-                        <form action="{{ url('/search/result') }}" method="GET">
-                            <label for="origin_kabupaten">Origin Kabupaten:</label>
-                            <select name="origin_kabupaten" id="origin_kabupaten">
-                                @foreach ($originKabupatens as $originKabupaten)
-                                    <option value="{{ $originKabupaten }}">
-                                        {{ $originKabupaten }}</option>
-                                @endforeach
-                            </select>
-
-                            <label for="destinasi_kabupaten">Destinasi Kabupaten:</label>
-                            <select name="destinasi_kabupaten" id="destinasi_kabupaten">
-                                @foreach ($destinasiKabupatens as $destinasiKabupaten)
-                                    <option value="{{ $destinasiKabupaten }}">
-                                        {{ $destinasiKabupaten }}</option>
-                                @endforeach
-                            </select>
-
-                            <button class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-                                type="submit">Search</button>
-                        </form>
-                    </div>
+                        @if ($results->count() > 0)
+                            <h1 style="font-weight: 700;">
+                                {{ $results[0]->origin_kabupaten }} ke {{ $results[0]->destinasi_kabupaten }}
+                            </h1>
+                        @endif
                 </header>
                 <div class="p-3">
-                    <!-- Table -->
                     <div class="overflow-x-auto">
                         <table class="table-auto w-full dark:text-slate-300">
                             <!-- Table header -->
@@ -130,16 +113,16 @@
                                         <div class="font-semibold text-left">No</div>
                                     </th>
                                     <th class="p-2">
-                                        <div class="font-semibold text-left">Origin Provinsi</div>
+                                        <div class="font-semibold text-left">Origin Kabupaten</div>
                                     </th>
                                     <th class="p-2">
-                                        <div class="font-semibold text-center">Origin Kab/Kota</div>
+                                        <div class="font-semibold text-center">Origin Kecamatan</div>
                                     </th>
                                     <th class="p-2 m-2">
-                                        <div class="font-semibold text-left">Destinasi Provinsi</div>
+                                        <div class="font-semibold text-left">Destinasi Kabupaten</div>
                                     </th>
                                     <th class="p-2">
-                                        <div class="font-semibold text-center">Destinasi Kab/Kota</div>
+                                        <div class="font-semibold text-center">Destinasi Kecamatan</div>
                                     </th>
                                     <th class="p-2">
                                         <div class="font-semibold text-center">Armada</div>
@@ -153,50 +136,50 @@
                                 </tr>
                             </thead>
                             <tbody class="text-sm font-medium divide-y divide-slate-100 dark:divide-slate-700">
-                                @foreach ($hargas as $harga)
+                                @foreach ($results as $item)
                                     <tr>
                                         <td class="p-2">
                                             {{ $loop->iteration }}.
                                         </td>
                                         <td class="p-2">
                                             <p class="text-left">
-                                                {{ $harga->origin_provinsi }}
+                                                {{ $item->origin_kabupaten }}
                                             </p>
                                         </td>
                                         <td class="p-2">
                                             <p class="text-center">
-                                                {{ $harga->origin_kabupaten }}
+                                                {{ $item->origin_kecamatan }}
                                             </p>
                                         </td>
                                         <td class="p-2 m-2">
                                             <p class="text-left">
-                                                {{ $harga->destinasi_provinsi }}
+                                                {{ $item->destinasi_kabupaten }}
                                             </p>
                                         </td>
                                         <td class="p-2">
                                             <p class="text-center">
-                                                {{ $harga->destinasi_kabupaten }}
+                                                {{ $item->destinasi_kecamatan }}
                                             </p>
                                         </td>
                                         <td class="p-2">
                                             <p class="text-center">
-                                                {{ $harga->armada }}
+                                                {{ $item->armada }}
                                             </p>
                                         </td>
                                         <td class="p-2">
                                             <p class="text-center">
-                                                Rp. {{ number_format($harga->harga, 0, ',', '.') }}
+                                                Rp. {{ number_format($item->harga, 0, ',', '.') }}
                                             </p>
                                         </td>
                                         <td class="p-4">
                                             <div class="text-center">
                                                 <button
                                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                                    <a href="/edit-longsewatruk/{{ $harga->id }}">Edit</a>
+                                                    <a href="/edit-shorttriptruk/{{ $item->id }}">Edit</a>
                                                 </button>
                                                 <button
                                                     class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
-                                                    <a href="/delete-longsewatruk/{{ $harga->id }}">Delete</a>
+                                                    <a href="/delete-pindahanshort/{{ $item->id }}">Delete</a>
                                                 </button>
                                             </div>
                                         </td>
@@ -204,7 +187,7 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{ $hargas->links() }}
+                        {{ $results->links() }}
                     </div>
                 </div>
             </div>

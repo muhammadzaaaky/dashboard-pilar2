@@ -14,7 +14,6 @@ use App\Http\Controllers\OrderSewaTrukLongController;
 use App\Http\Controllers\OrderSewaTrukShortController;
 use App\Http\Controllers\OrderPindahanLongController;
 use App\Http\Controllers\OrderPindahanShortController;
-use App\Models\LongTripTruk;
 
 /*
 |--------------------------------------------------------------------------
@@ -79,6 +78,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/import-pindahanlongtrip', [ImportController::class, 'importDataPindahanLongTrip'])->name('import-longtripsewa');
     Route::get('/download-pindahanlongtrip', [ExportController::class, 'exportDataPindahanLongTrip'])->name('export.data');
     Route::post('/data-pindahanlongtrip', [LongTripPindahanController::class, 'store'])->name('datapindahan.store');
+    Route::get('/Search', [LongTripPindahanController::class, 'index']);
+    Route::get('/search/result/pindahan-long', [LongTripPindahanController::class, 'search']);
+    Route::get('/search/live', [LongTripPindahanController::class, 'LiveSearch']);
 
     // short sewa truk
     Route::get('/listharga-shorttriptruk', [ShortTripTrukController::class, 'index'])->name('listharga-shorttriptruk');
@@ -89,6 +91,9 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/import-shorttripsewa', [ImportController::class, 'importDataShortsewa'])->name('import-shorttripsewa');
     Route::get('/download-shortsewa', [ExportController::class, 'exportDataShortsewa'])->name('export.data');
     Route::post('/data-shortsewa', [ShortTripTrukController::class, 'store'])->name('data.store');
+    Route::get('/Search', [ShortTripTrukController::class, 'index']);
+    Route::get('/search/result/sewatruk-short', [ShortTripTrukController::class, 'search']);
+    Route::get('/search/live', [ShortTripTrukController::class, 'LiveSearch']);
 
     // shortTrip pindahan
     Route::get('/listharga-pindahanshorttrip', [ShortTripPindahanController::class, 'index'])->name('listharga-pindahanshorttrip');
@@ -97,16 +102,27 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     Route::post('/import-pindahanshorttrip', [ImportController::class, 'importDataPindahanShortTrip'])->name('import-shorttripsewa');
     Route::get('/download-pindahanshorttrip', [ExportController::class, 'exportDataPindahanShortTrip'])->name('export.data');
     Route::post('/data-pindahanshorttrip', [ShortTripPindahanController::class, 'store'])->name('datapindahan.store');
+    Route::get('/Search', [ShortTripPindahanController::class, 'index']);
+    Route::get('/search/result/pindahan-short', [ShortTripPindahanController::class, 'search']);
+    Route::get('/search/live', [ShortTripPindahanController::class, 'LiveSearch']);
 
     //order sewa truk longtrip
     Route::get('/ordersewa-longtriptruk', [OrderSewaTrukLongController::class, 'index'])->name('ordersewa-longtriptruk');
+    Route::get('/edit-orderlongsewa/{id}', [OrderSewaTrukLongController::class, 'edit']);
+    Route::post('/update-orderlongsewa/{id}', [OrderSewaTrukLongController::class, 'update'])->name('order.update');
 
     //order sewa truk shorttrip
     Route::get('/ordersewa-shorttriptruk', [OrderSewaTrukShortController::class, 'index'])->name('ordersewa-shorttriptruk');
+    Route::get('/edit-ordershortsewa/{id}', [OrderSewaTrukShortController::class, 'edit']);
+    Route::post('/update-ordershortsewa/{id}', [OrderSewaTrukShortController::class, 'update'])->name('order.update');
 
     //order pindahan longtrip
     Route::get('/order-pindahanlong', [OrderPindahanLongController::class, 'index'])->name('order-pindahanlong');
+    Route::get('/edit-pindahanlong/{id}', [OrderPindahanLongController::class, 'edit']);
+    Route::post('/update-pindahanlong/{id}', [OrderPindahanLongController::class, 'update'])->name('order.update');
 
     //order pindahan shorttrip
     Route::get('/order-pindahanshort', [OrderPindahanShortController::class, 'index'])->name('order-pindahanshort');
+    Route::get('/edit-pindahanshort/{id}', [OrderPindahanShortController::class, 'edit']);
+    Route::post('/update-pindahanshort/{id}', [OrderPindahanShortController::class, 'update'])->name('order.update');
 });

@@ -8,6 +8,7 @@
         <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
         <title>@yield('title', config('app.name', 'Dashboard'))</title>
+        <link rel="icon" href="{!! asset('images/logo.svg') !!}" />
 
         <!-- Fonts -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap">
